@@ -7,7 +7,7 @@ describe Rackie::Stack do
     @response = mock_a :response
   end
 
-  it "should go through the entire stack" do
+  it "should use a running stack to start the process" do
     asserter = mock_an :interceptor
     
     stack = Rackie::Stack.new(Delegate.new, asserter)

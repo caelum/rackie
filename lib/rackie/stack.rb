@@ -6,7 +6,7 @@ module Rackie
     end
     
     def process(env, response)
-      RunningStack.new(@interceptors.dup).process(env, response)
+      RunningStack.for(@interceptors.dup).process(env, response)
     end
     
   end
