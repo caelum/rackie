@@ -6,20 +6,23 @@ def request(uri)
 end
 
 class Mocked
-  def Mocked(what)
+  def initialize(what)
     @what = what
   end
   def to_s
-    "[a mocked #{what}]"
+    "[a mocked #{@what}]"
   end
 end
 
 def mock_an(what)
   Mocked.new(what)
 end
+def mock_a(what)
+  Mocked.new(what)
+end
 
 class Delegate
-  def process(env, chain, response)
+  def call(env, chain, response)
     chain.process(env, response)
   end
 end
