@@ -1,3 +1,3 @@
 module Rackie
-  # Your code goes here...
+  autoload :App, 'rackie/app'
 end
