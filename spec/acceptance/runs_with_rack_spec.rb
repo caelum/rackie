@@ -30,8 +30,8 @@ describe Rackie::Interceptor::Rack do
       env = {}
       stack = Rackie::RunningStack.for([
         Rackie::Interceptor::Nil.new,
-        Rackie::Interceptor::Rack.for(lambda { [200, headers, body] }, RackSetEnv, RackDelegate)
-        ])
+        Rackie::Interceptor::Rack.for(lambda { [200, headers, body] }, RackSetEnv, RackDelegate),
+        Delegate.new])
       stack.process(env, response)
       env[:data].should be_true
     end
