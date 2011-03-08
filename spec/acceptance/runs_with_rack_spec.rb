@@ -8,6 +8,15 @@ class RackDelegate
     @app.call(env)
   end
 end
+class RackSetEnv
+  def initialize(app)
+    @app = app
+  end
+  def call(env)
+    env[:data] = true
+    @app.call(env)
+  end
+end
 
 describe Rackie::Interceptor::Rack do
   
@@ -18,11 +27,13 @@ describe Rackie::Interceptor::Rack do
       body = "Well done!"
       response = mock_a :response
       
+      env = {}
       stack = Rackie::RunningStack.for([
-        Rackie::Interceptor::Rack.new(RackDelegate),
-        Rackie::Interceptor::Rack.new(lambda { [200, headers, body] })
+        Rackie::Interceptor::Nil.new,
+        Rackie::Interceptor::Rack.for(lambda { [200, headers, body] }, RackSetEnv, RackDelegate)
         ])
-      stack.process({}, response)
+      stack.process(env, response)
+      env[:data].should be_true
     end
   
   end

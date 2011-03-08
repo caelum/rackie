@@ -13,20 +13,27 @@ module Rackie
     
     # A Rack module wrapper
     class Rack
-      def initialize(wrapped, *args)
-        puts wrapped.respond_to? :call
-        if wrapped.respond_to? :call
-          @wrapped = wrapped
+      def self.for(*stack)
+        Rack.new(stack)
+      end
+      def initialize(stack)
+        @stack = stack.dup
+      end
+      
+      def call(env, chain = nil, response = nil)
+        if(chain)
+          # not being invoked by some rack middleware
+          chain.process(env, invoke_next(env))
         else
-          @wrapped = wrapped.new(Proxy.new(self), *args)
+          invoke_next(env)
         end
       end
       
-      def call(env, chain, response)
-        env[:chain] = chain
-        env[:response] = response
-        # this would not work since we need to find the exact position to match older response changing interceptors
-        new_response = @wrapped.call(env)
+      private
+      def invoke_next(env)
+        current = @stack.pop
+        current = current.new(self) unless current.respond_to? :call
+        current.call(env)
       end
     end
   end
