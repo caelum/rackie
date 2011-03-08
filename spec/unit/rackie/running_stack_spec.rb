@@ -11,7 +11,7 @@ describe Rackie::RunningStack do
     processor = mock_a :running_stack
     
     Rackie::RunningStack.should_receive(:for).with([Delegate]).and_return(processor)
-    processor.should_receive(:process)
+    processor.should_receive(:process).with(@env, @response)
     stack = Rackie::Stack.new(Delegate)
     stack.process(@env, @response)
   end
