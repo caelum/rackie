@@ -1,9 +1,6 @@
 require 'rack'
-require 'mongrel'
 
 module Rackie
-  class A
-  end
   class App
     
     def initialize(port, *interceptors)
@@ -11,12 +8,11 @@ module Rackie
       @interceptors = interceptors
     end
     
-    def run
+    def to_rack_app
       my_rack = self
       app = Rack::Builder.new {
-        use A
+        use my_rack
       }.to_app
-      Rack::Handler::Mongrel.run(app, :Port => 3000)
     end
     
   end
