@@ -1,13 +1,5 @@
 require 'test_helper'
 
-class StaticResponse
-  def initialize(status, headers, body)
-    @status = status
-    @headers = headers
-    @body = body
-  end
-  attr_reader :status, :headers, :body
-end
 describe Rackie::Interceptor::Render do
 
   it "should go render each process and move forward" do

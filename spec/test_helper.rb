@@ -26,3 +26,13 @@ class Delegate
     chain.process(env, response)
   end
 end
+
+# probably useful to extract to the lib itself
+class StaticResponse
+  def initialize(status, headers, body)
+    @status = status
+    @headers = headers
+    @body = body
+  end
+  attr_reader :status, :headers, :body
+end
